@@ -21,6 +21,28 @@ public class Util {
         return r;
     }
 
+    public static int randomIntWithProb(double[] proba) {
+        double p = Math.random();
+        double sumProba = 0.0;
+        for(int i=0; i<proba.length; i++) {
+            sumProba += proba[i];
+            if(p<sumProba)
+                return i;
+        }
+        return proba.length;
+    }
+
+    public static int[] intSequence(int base, int expo, int idx) {
+        int[] sequence = new int[expo];
+        for(int i=1; i<expo; i++) {
+            int v = (int) Math.floor((double) idx/Math.pow(base,expo-i));
+            sequence[i-1] = v;
+            idx -= v*Math.pow(base,expo-i);
+        }
+        sequence[expo-1] = idx;
+        return sequence;
+    }
+
     /**
      * Randomly generate a 2-d coordinate given a range
      */

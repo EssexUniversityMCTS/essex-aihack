@@ -25,7 +25,6 @@ public class BattleView extends JComponent {
     boolean ready = false;
 
     Ship ship;
-    boolean ready = false;
 
     static double viewScale = 1.0;
 

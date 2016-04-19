@@ -149,10 +149,6 @@ public class SimpleBattle {
         return allRecord;
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> jialin
     protected void waitTillReady()
     {
         if(visible)
@@ -182,10 +178,7 @@ public class SimpleBattle {
         }
     }
 
-<<<<<<< HEAD
 
-=======
->>>>>>> jialin
     /**
      * Randomly reset the game if randomInit==true
      */

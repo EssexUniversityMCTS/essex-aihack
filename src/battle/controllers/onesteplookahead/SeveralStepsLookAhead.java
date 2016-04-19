@@ -3,7 +3,6 @@ package battle.controllers.onesteplookahead;
 
 import battle.SimpleBattle;
 import battle.controllers.diego.ActionMap;
-import math.Pair;
 import battle.BattleController;
 import asteroids.Action;
 import utilities.ElapsedCpuTimer;
