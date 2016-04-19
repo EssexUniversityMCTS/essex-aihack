@@ -106,9 +106,6 @@ public class SeveralStepsLookAhead implements BattleController {
         //System.out.println("action : " + best_action);
         return ActionMap.ActionMap[bestAction];
    }
-   
-<<<<<<< HEAD
-       public void draw(Graphics2D g) {} 
-=======
->>>>>>> jialin
+
+    public void draw(Graphics2D g) {}
 }

@@ -50,16 +50,16 @@ public class RandomPairing extends ICoevPairing
 
         //2. Go through them, evaluate and average the fitness
         StatSummary ss = new StatSummary();
-//groupSize = 1;
+        //groupSize = 1;
         for(i = 0; i < groupSize; ++i)
         {
             GAIndividual rival = otherPop[group[i]];
 
-//rival = new GAIndividual(Search.NUM_ACTIONS_INDIVIDUAL, 0, null);
+            //rival = new GAIndividual(Search.NUM_ACTIONS_INDIVIDUAL, -1, null);
 
             double fit = individual.evaluate(game, rival);
             ss.add(fit);
-            //rival.accumFitness(-fit);
+            rival.accumFitness(-fit);
         }
 
         double fit = ss.mean();

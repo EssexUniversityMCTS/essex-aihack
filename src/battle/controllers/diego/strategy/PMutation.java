@@ -25,10 +25,13 @@ public class PMutation implements IMutation
         for (int i = 0; i < individual.m_genome.length; i++) {
             if(m_rnd.nextDouble() < mutProb)
             {
-                if(m_rnd.nextDouble() < 0.5)  //mutate thrust
+                double mutProba = m_rnd.nextDouble();
+                if(mutProba < 3/7)  //mutate thrust
                     individual.m_genome[i] = ActionMap.mutateThrust(individual.m_genome[i]);
-                else //mutate steering
+                else if (mutProba < 6/7)  //mutate steering
                     individual.m_genome[i] = ActionMap.mutateSteer(individual.m_genome[i], m_rnd.nextDouble()>0.5);
+                else //mutate shooting
+                    individual.m_genome[i] = ActionMap.mutateShooting(individual.m_genome[i]);
             }
 
         }

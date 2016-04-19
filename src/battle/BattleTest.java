@@ -34,20 +34,19 @@ public class BattleTest {
 
     public static int MAX_TICKS_GAME = 2000;
     public static int NUM_GAMES_TO_PLAY = 1;
-    public static int SCORE_FUNC = 1;
 
     public static final boolean SHOW_ROLLOUTS = true;
 
     public static void main(String[] args) {
         //playOne(BattleTest.WASD, BattleTest.ARROWS);
 
+        Search.NUM_ACTIONS_INDIVIDUAL = 10;
+        Search.MACRO_ACTION_LENGTH = 1;
         playOne(BattleTest.GA, BattleTest.COEV);
         //playOne(BattleTest.GA, BattleTest.COEV);
         //
         //playOne(BattleTest.ONESTEP, BattleTest.COEV);
         //playOne(BattleTest.GA, BattleTest.OLMCTS);
-        Search.NUM_ACTIONS_INDIVIDUAL = 10;
-        Search.MACRO_ACTION_LENGTH = 1;
         //playN(BattleTest.GA, BattleTest.COEV, "plots/data/GA-RND_"+Search.NUM_ACTIONS_INDIVIDUAL+"x"+Search.MACRO_ACTION_LENGTH+"_vs_COEV_"+NUM_GAMES_TO_PLAY+"x"+MAX_TICKS_GAME+".txt");
     }
     
@@ -55,7 +54,7 @@ public class BattleTest {
     public static void playOne(int ply1, int ply2)
     {
         boolean visuals = true;
-        SimpleBattle battle = new SimpleBattle(visuals, MAX_TICKS_GAME, SCORE_FUNC);
+        SimpleBattle battle = new SimpleBattle(visuals, MAX_TICKS_GAME);
         BattleController p1 = createPlayer(ply1);
         BattleController p2 = createPlayer(ply2);
 
@@ -69,7 +68,7 @@ public class BattleTest {
 
         for(int i = 0; i < NUM_GAMES_TO_PLAY; ++i) {
 
-            SimpleBattle battle = new SimpleBattle(visuals, MAX_TICKS_GAME, SCORE_FUNC);
+            SimpleBattle battle = new SimpleBattle(visuals, MAX_TICKS_GAME);
             BattleController p1 = createPlayer(ply1);
             BattleController p2 = createPlayer(ply2);
 
@@ -123,8 +122,8 @@ public class BattleTest {
                         new UniformCrossover(rnd1),
                         new PMutation(rnd1, 0.1),
                         new TournamentSelection(rnd1, 3),
-                        new NullOpponentGenerator(Search.NUM_ACTIONS_INDIVIDUAL),
-                        //new RndOpponentGenerator(rnd1),
+                        //new NullOpponentGenerator(Search.NUM_ACTIONS_INDIVIDUAL),
+                        new RndOpponentGenerator(rnd1),
                         rnd1));
             case BattleTest.ONESTEP:
                 return new OneStepLookAhead();

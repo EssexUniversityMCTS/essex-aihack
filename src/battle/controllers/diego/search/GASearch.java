@@ -61,14 +61,14 @@ public class GASearch extends Search {
      * Initializes the random search engine. This function is also called to reset it.
      */
     @Override
-    public void init(SimpleBattle gameState, int playerId)
+    public void init(SimpleBattle gameState, int _playerID)
     {
         hitMapOwn = new int[Constants.width][Constants.height];
         hitMapOpp = new int[Constants.width][Constants.height];
 
         this.numEvals = 0;
         m_individuals = new GAIndividual[NUM_INDIVIDUALS];
-        this.playerID = playerId;
+        this.playerID = _playerID;
         GAIndividual opponent = opponentGen.getOpponent(Search.NUM_ACTIONS_INDIVIDUAL);
 
         // check that we have at least enough time for initialisation
@@ -177,7 +177,7 @@ public class GASearch extends Search {
     @Override
     public double scoreGame(SimpleBattle game)
     {
-        return game.score(playerID); //game.getPoints(playerID);
+        return game.score(playerID); //game.getPoints(playerId);
     }
 
 

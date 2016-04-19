@@ -50,9 +50,6 @@ public abstract class GameObject {
         return null;
     }
 
-	public void addRandomForce() {
-	}
-
     public int getId() {
         return this.id;
     }  
