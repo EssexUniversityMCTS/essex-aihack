@@ -34,7 +34,7 @@ public interface Constants {
 
     double missileMinVelocity = 2;
     int missileRadius = 2;
-    int missileTTL = 60;
+    int missileTTL = 100;
 
     // how many smaller asteroids an asteroid splits into
     int nSplits = 3;

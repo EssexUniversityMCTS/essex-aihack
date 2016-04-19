@@ -26,7 +26,7 @@ public class TestWithMissile {
 
     public static int player1 = 0;
     public static int player2 = 0;
-    public static String[] playerNames = {"COEV", "GA", "RND", "NULL", "WASD", "ARROWS", "ONESTEP", "OLMCTS"};
+    public static String[] playerNames = {"COEV", "GA", "RND", "NULL", "WASD", "ARROWS", "ONESTEP", "OLMCTS", "SSTEP"};
     public static boolean screen = false; 
     static BattleTest mytest;
 

@@ -2,6 +2,7 @@ package battle.controllers.diego.strategy;
 
 import battle.SimpleBattle;
 import battle.controllers.diego.search.GAIndividual;
+import battle.controllers.diego.search.Search;
 import utilities.StatSummary;
 
 import java.util.Random;
@@ -49,9 +50,12 @@ public class RandomPairing extends ICoevPairing
 
         //2. Go through them, evaluate and average the fitness
         StatSummary ss = new StatSummary();
+//groupSize = 1;
         for(i = 0; i < groupSize; ++i)
         {
             GAIndividual rival = otherPop[group[i]];
+
+//rival = new GAIndividual(Search.NUM_ACTIONS_INDIVIDUAL, 0, null);
 
             double fit = individual.evaluate(game, rival);
             ss.add(fit);

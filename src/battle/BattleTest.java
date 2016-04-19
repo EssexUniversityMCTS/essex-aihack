@@ -30,17 +30,18 @@ public class BattleTest {
     static final int ARROWS = 5;
     static final int ONESTEP = 6;
     static final int OLMCTS = 7;
+    static final int SSTEP = 8;
 
     public static int MAX_TICKS_GAME = 2000;
     public static int NUM_GAMES_TO_PLAY = 1;
     public static int SCORE_FUNC = 1;
 
-    public static final boolean SHOW_ROLLOUTS = false;
+    public static final boolean SHOW_ROLLOUTS = true;
 
     public static void main(String[] args) {
         //playOne(BattleTest.WASD, BattleTest.ARROWS);
 
-        playOne(BattleTest.ARROWS, BattleTest.WASD);
+        playOne(BattleTest.GA, BattleTest.COEV);
         //playOne(BattleTest.GA, BattleTest.COEV);
         //
         //playOne(BattleTest.ONESTEP, BattleTest.COEV);
@@ -137,6 +138,8 @@ public class BattleTest {
                 return new WASDController();
             case BattleTest.ARROWS:
                 return new ArrowsController();
+            case BattleTest.SSTEP:
+                return new SeveralStepsLookAhead(rnd1);
         }
 
         return new ArrowsController();

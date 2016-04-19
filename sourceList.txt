@@ -36,7 +36,6 @@ src/battle/controllers/diego/BattleEvoController.java
 src/battle/controllers/diego/search/CoevSearch.java
 src/battle/controllers/diego/search/GAIndividual.java
 src/battle/controllers/diego/search/GASearch.java
-src/battle/controllers/diego/search/OneStepLookAhead.java
 src/battle/controllers/diego/search/RandomSearch.java
 src/battle/controllers/diego/search/Search.java
 src/battle/controllers/diego/strategy/ICoevPairing.java
@@ -58,6 +57,7 @@ src/battle/controllers/olmcts/Agent.java
 src/battle/controllers/olmcts/SingleMCTSPlayer.java
 src/battle/controllers/olmcts/SingleTreeNode.java
 src/battle/controllers/onesteplookahead/OneStepLookAhead.java
+src/battle/controllers/onesteplookahead/SeveralStepsLookAhead.java
 src/battle/controllers/random/RandomController.java
 src/ga/Eval2.java
 src/ga/SimpleRandomHillClimberEngine.java
@@ -65,6 +65,7 @@ src/math/Matrix.java
 src/math/Util.java
 src/math/Vector2d.java
 src/math/VectorTest.java
+src/math/Pair.java
 src/math/MutableDouble.java
 src/trackgen/LissajousTest.java
 src/trackgen/TrackTest.java

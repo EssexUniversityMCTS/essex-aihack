@@ -3,6 +3,7 @@ package battle.controllers.onesteplookahead;
 
 import battle.SimpleBattle;
 import battle.controllers.diego.ActionMap;
+import math.Pair;
 import battle.BattleController;
 import asteroids.Action;
 import utilities.ElapsedCpuTimer;
@@ -106,5 +107,8 @@ public class SeveralStepsLookAhead implements BattleController {
         return ActionMap.ActionMap[bestAction];
    }
    
+<<<<<<< HEAD
        public void draw(Graphics2D g) {} 
+=======
+>>>>>>> jialin
 }

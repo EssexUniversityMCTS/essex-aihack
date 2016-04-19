@@ -63,36 +63,36 @@ public class NeuroShip extends GameObject {
         return scale * 2.4;
     }
 
-    public void addRandomForce(double min_force, double max_force, boolean rotate, boolean inverseForce)
+    public void addForceRotate(double min_force, double max_force, Vector2d dir)
     {
-        Vector2d force;
-        if(!inverseForce) {
-            //Random direction:
-            double rad = Math.toRadians(Math.random()*360);
-            force = new Vector2d(0.0, 1.0, true);
-            force.rotate(rad);
-        } else {
-            force = new Vector2d(-d.x/d.mag(), -d.y/d.mag(), true);
-        }
+        addRepulsiveForce(min_force,  max_force, dir);
+        //Random rotation:
+        int rotation = (int) (Math.random()*3);
+        double turnAngle = rotation == 0? -1 : rotation == 1 ? 1 : 0;
+        d.rotate(turnAngle * steerStep * (Math.random() ));
+    }
+
+    public void addInverseForce(double min_force, double max_force)
+    {
+        Vector2d force = new Vector2d(-d.x/d.mag(), -d.y/d.mag(), true);
+
         //Random strength (between 1 and 5, for instance)
         double strength = min_force + Math.random()*(max_force-min_force);
         force.multiply(strength);
         //System.out.println("force: x=" + force.x + " y=" + force.y);
 
         v.add(force);
-
-        if(rotate) {
-            //Random rotation:
-            int rotation = (int) (Math.random()*3);
-            double turnAngle = rotation == 0? -1 : rotation == 1 ? 1 : 0;
-            d.rotate(turnAngle * steerStep * (Math.random() ));
-        }
-        //System.out.format("%.3f %.3f %d\n", rad, strength, rotation);
     }
 
-    public void addRandomForce() {
-        addRandomForce(MIN_FORCE,MAX_FORCE,true,false);
+
+    public void addRepulsiveForce(double min_force, double max_force, Vector2d dir)
+    {
+        double strength = min_force + Math.random()*(max_force-min_force);
+        //System.out.println(" ->" + strength);
+        v.add(new Vector2d(strength * dir.x, strength* dir.y, true));
     }
+
+
     public void reset() {
         s.set(width / 2, height / 2);
         v.zero();

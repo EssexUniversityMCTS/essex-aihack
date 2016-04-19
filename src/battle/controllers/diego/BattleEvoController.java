@@ -1,6 +1,7 @@
 package battle.controllers.diego;
 
 import asteroids.Action;
+import battle.BattleController;
 import battle.BattleTest;
 import battle.SimpleBattle;
 import battle.controllers.diego.search.Search;
@@ -36,6 +37,8 @@ public class BattleEvoController implements battle.BattleController {
     private int m_lastMacroAction;
     
     public static long DURATION_PER_TICK = 10;
+
+    int myId;
     
     /**
      * Constructor of the controller
@@ -57,6 +60,7 @@ public class BattleEvoController implements battle.BattleController {
     @Override
     public Action getAction(SimpleBattle game, int playerId, ElapsedCpuTimer elapsedTimer)
     {
+        this.myId=playerId;
         m_search.playerID = playerId;
         if(Search.MACRO_ACTION_LENGTH == 1)
             return getSingleAction(game, playerId, elapsedTimer);
@@ -148,24 +152,39 @@ public class BattleEvoController implements battle.BattleController {
      * @param a_gr Graphics device to paint.
      */
     public void paint(Graphics2D a_gr) {}
+
+
     public void draw(Graphics2D g)
     {
         if(BattleTest.SHOW_ROLLOUTS) {
+
             if (m_search.hitMapOwn != null) {
                 
                 for (int i = 0; i < m_search.hitMapOwn.length; ++i) {
                     for (int j = 0; j < m_search.hitMapOwn[i].length; ++j) {
+
+
+                        g.setColor( myId == 0 ? Color.GREEN : Color.BLUE);
                         if (m_search.hitMapOwn[i][j] > 0) {
                             //System.out.println(i + " " + j + ":" + m_search.hitMapOwn[i][j]);
-                            g.setColor(Color.WHITE);
                             g.fillOval(i, j, 1, 1);
                         }
-                        
+
+
+                        g.setColor(Color.WHITE);
+                        if (m_search.hitMapOpp[i][j] > 0) {
+                            //System.out.println(i + " " + j + ":" + m_search.hitMapOwn[i][j]);
+                            g.fillOval(i, j, 1, 1);
+                        }
+
+
                     }
                     
                 }
             }
-            int a = 0;
+
+
+
         }
     }
 }

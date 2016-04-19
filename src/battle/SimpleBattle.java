@@ -53,7 +53,7 @@ public class SimpleBattle {
     NeuroShip s1, s2;
     BattleController p1, p2;
     BattleView view;
-    int currentTick;
+    public int currentTick;
 
     double score1, score2;
     StatSummary ss1 = new StatSummary();
@@ -299,6 +299,29 @@ public class SimpleBattle {
         objects.removeAll(killList);
         **/
         currentTick++;
+
+        NeuroShip ss1 = s1;
+        NeuroShip ss2 = s2;
+        double dist = ss1.distTo(ss2)-minShootRange;
+
+        //if(playerId == 0)
+        //    System.out.println("player 1 currentTick: " +currentTick+"; d: " + dist + "; dp: " + distPoints + "; dot: " + dot + "; TOTAL: " + (dot*distPoints));
+        //if(playerId == 1)
+        //    System.out.println("player 2 currentTick: " +currentTick+"; d: " + dist + "; dp: " + distPoints + "; dot: " + dot + "; TOTAL: " + (dot*distPoints));
+
+        /**
+         * Check if the two ships are too closed to each other (less than 5)
+         * If yes, neither of them can shoot, score=0
+         */
+        if(dist<0)
+        {
+            Vector2d dir = Vector2d.subtract(ss2.s, ss1.s);
+            dir.normalise();
+            s2.addRepulsiveForce( 0.5f *minShootRange, minShootRange,dir);
+            dir.multiply(-1);
+            s1.addRepulsiveForce( 0.5f * minShootRange, minShootRange, dir);
+        }
+
         updateScores();
 
 
@@ -335,25 +358,32 @@ public class SimpleBattle {
             ss2 = s1;
         }
 
-        double dist = ss1.distTo(ss2)-minShootRange;
-
-        //if(playerId == 0)
-        //    System.out.println("player 1 currentTick: " +currentTick+"; d: " + dist + "; dp: " + distPoints + "; dot: " + dot + "; TOTAL: " + (dot*distPoints));
-        //if(playerId == 1)
-        //    System.out.println("player 2 currentTick: " +currentTick+"; d: " + dist + "; dp: " + distPoints + "; dot: " + dot + "; TOTAL: " + (dot*distPoints));
-
-        /**                                                                     
-        * Check if the two ships are too closed to each other (less than 5) 
-        * If yes, neither of them can shoot, score=0                           
-        */
-
-        if(dist<0)
-        {
-			//return 0;
-            s1.addRandomForce(2*minShootRange,5*minShootRange,false,true);
-            s2.addRandomForce(2*minShootRange,5*minShootRange,false,true);
-        }
-        dist = Math.abs(ss1.distTo(ss2)-minShootRange);
+//        double dist = ss1.distTo(ss2)-minShootRange;
+//
+//        //if(playerId == 0)
+//        //    System.out.println("player 1 currentTick: " +currentTick+"; d: " + dist + "; dp: " + distPoints + "; dot: " + dot + "; TOTAL: " + (dot*distPoints));
+//        //if(playerId == 1)
+//        //    System.out.println("player 2 currentTick: " +currentTick+"; d: " + dist + "; dp: " + distPoints + "; dot: " + dot + "; TOTAL: " + (dot*distPoints));
+//
+//        /**
+//        * Check if the two ships are too closed to each other (less than 5)
+//        * If yes, neither of them can shoot, score=0
+//        */
+//        if(dist<0)
+//        {
+//			//return 0;
+//
+//            //System.out.println("£££" + currentTick);
+//
+//            Vector2d dir = Vector2d.subtract(ss2.s, ss1.s);
+//            dir.normalise();
+//            //System.out.println(dist);
+//            s2.addRepulsiveForce(2*minShootRange,5*minShootRange,dir);
+//            dir.multiply(-1);
+//            s1.addRepulsiveForce(2 * minShootRange, 5 * minShootRange, dir);
+//
+//        }
+        double dist = Math.abs(ss1.distTo(ss2));//-minShootRange);
 
 
         double dot = ss1.dotTo(ss2);
@@ -372,7 +402,7 @@ public class SimpleBattle {
             return MAX_SCORE;
         }
         */
-        double firePoints = this.scoreFunc*stats.get(playerId).nPoints/(10); 
+        double firePoints = this.scoreFunc*stats.get(playerId).nPoints;///(10);
         //return dot*distPoints;
         return (dot*distPoints + firePoints);
         //return (stats.get(playerId).life + dot*distPoints + firePoints);
@@ -469,11 +499,14 @@ public class SimpleBattle {
                         if (overlap(actor, ob)) {
                             ob.hit();
                             this.stats.get(playerId).life--;
+                            Vector2d dir = new Vector2d(ob.v, true);
+                            dir.normalise();
+
 						    if(playerId==1) {
-							    s2.addRandomForce();
+							    s2.addForceRotate(NeuroShip.MIN_FORCE, NeuroShip.MAX_FORCE, dir);
                                 this.stats.get(0).nPoints += 10;
 						    } else {
-							    s1.addRandomForce();
+							    s1.addForceRotate(NeuroShip.MIN_FORCE, NeuroShip.MAX_FORCE, dir);
                                 this.stats.get(1).nPoints += 10;
 						    }
                         }
@@ -536,7 +569,7 @@ public class SimpleBattle {
         }
         double dist = ss1.distTo(ss2);
         //if (dist >= minShootRange && dist<=maxShootRange && thisStats.nMissiles > 0 && thisStats.cooldown <=0) {
-        if (dist >= minShootRange && dist<=maxShootRange && thisStats.nMissiles > 0 && thisStats.cooldown <=0) { 
+        if (/*dist >= minShootRange && dist<=maxShootRange && */thisStats.nMissiles > 0 && thisStats.cooldown <=0) {
         	BattleMissile m = new BattleMissile(s, new Vector2d(0, 0, true), playerId);
         	// the velocity is noisy
         	double noiseStrength = 0.05;
@@ -554,7 +587,7 @@ public class SimpleBattle {
 			thisStats.nMissiles--;
             thisStats.nPoints--;
 			thisStats.cooldown = this.cooldown;
-			currentShip.addRandomForce(5,10,false,false);
+			//currentShip.addInverseForce(1, 5);
         } else {
 			thisStats.cooldown--;
 		}
@@ -702,12 +735,12 @@ public class SimpleBattle {
         int nPoints;
         int totalMissiles;
 
-        public PlayerStats(int _nMissiles, int _cooldown, int _life, int _nPoints, int _totalMissiles) {
+        public PlayerStats(int _nMissiles, int _cooldown, int _life, int _nPoints, int _totMissiles) {
             this.nMissiles = _nMissiles;
             this.cooldown = _cooldown;
             this.life = _life;
             this.nPoints = _nPoints;
-            this.totalMissiles = _totalMissiles;
+            this.totalMissiles = _totMissiles;
         }
 
         public int getMissilesFired() {
@@ -727,7 +760,7 @@ public class SimpleBattle {
         }
 
         public String toString() {
-            return nMissiles + " : " + cooldown;
+            return "M:" + nMissiles + "; C: " + cooldown + "; L: " + life + "; P: " + nPoints + " : ";
         }
     }
 }
