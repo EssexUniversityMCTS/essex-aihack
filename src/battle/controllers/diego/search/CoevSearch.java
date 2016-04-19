@@ -77,7 +77,7 @@ public class CoevSearch extends Search {
             m_individuals[i] = new GAIndividual(Search.NUM_ACTIONS_INDIVIDUAL, playerID, this);
             m_individuals[i].randomize(m_rnd, ActionMap.ActionMap.length);
 
-            m_individualsOpp[i] = new GAIndividual(Search.NUM_ACTIONS_INDIVIDUAL, playerID, this);
+            m_individualsOpp[i] = new GAIndividual(Search.NUM_ACTIONS_INDIVIDUAL, 1-playerID, null);
             m_individualsOpp[i].randomize(m_rnd, ActionMap.ActionMap.length);
         }
 

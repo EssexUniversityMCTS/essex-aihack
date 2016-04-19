@@ -33,7 +33,7 @@ public class BattleTest {
 
     public static int MAX_TICKS_GAME = 2000;
     public static int NUM_GAMES_TO_PLAY = 1;
-    public static int SCORE_FUNC = 0;
+    public static int SCORE_FUNC = 1;
 
     public static final boolean SHOW_ROLLOUTS = false;
 

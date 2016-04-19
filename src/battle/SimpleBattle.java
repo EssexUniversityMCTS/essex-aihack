@@ -36,7 +36,7 @@ public class SimpleBattle {
     public static long DURATION_PER_TICK = 10;
 
     int nbObstacles = 5;
-    int nMissiles = 100;
+    int missilesBudget = 100;
     int missileSpeed = 4;
 	int cooldown = 4;
     int life = 5;
@@ -44,7 +44,7 @@ public class SimpleBattle {
 	double maxShootRange = 100000;
     private static final double MAX_SCORE = 1000000;
 	private static final double MIN_SCORE = -1000000;
-    public static int scoreFunc = 0;
+    public static int scoreFunc = 1;
 
     ArrayList<GameObject> objects;
     ArrayList<PlayerStats> stats;
@@ -107,9 +107,6 @@ public class SimpleBattle {
         this.p1 = p1;
         this.p2 = p2;
         reset(true);
-
-        stats.add(new PlayerStats(nMissiles, 0, life));
-        stats.add(new PlayerStats(nMissiles, 0, life));
 
         if (p1 instanceof KeyListener) {
             view.addKeyListener((KeyListener)p1);
@@ -205,8 +202,8 @@ public class SimpleBattle {
         this.currentTick = 0;
         this.winner = -1;
 
-        stats.add(new PlayerStats(nMissiles, 0, life));
-        stats.add(new PlayerStats(nMissiles, 0, life));
+        stats.add(new PlayerStats(missilesBudget, 0, life, 0, missilesBudget));
+        stats.add(new PlayerStats(missilesBudget, 0, life, 0, missilesBudget));
         objects.add(s1);
         objects.add(s2);
     }
@@ -426,7 +423,7 @@ public class SimpleBattle {
     protected ArrayList<PlayerStats> copyStats() {
         ArrayList<PlayerStats> statsClone = new ArrayList<PlayerStats>();
         for (PlayerStats object : stats) {
-            statsClone.add(new PlayerStats(object.nMissiles, object.cooldown, object.life));
+            statsClone.add(new PlayerStats(object.nMissiles, object.cooldown, object.life, object.nPoints, missilesBudget));
         }
 
         return statsClone;
@@ -705,20 +702,12 @@ public class SimpleBattle {
         int nPoints;
         int totalMissiles;
 
-        public PlayerStats(int _nMissiles, int _cooldown, int _life) {
+        public PlayerStats(int _nMissiles, int _cooldown, int _life, int _nPoints, int _totalMissiles) {
             this.nMissiles = _nMissiles;
             this.cooldown = _cooldown;
             this.life = _life;
-            this.nPoints = 0;
-            this.totalMissiles = this.nMissiles;
-        }
-
-        public PlayerStats() {
-            this.nMissiles = 10;
-            this.cooldown = 0;
-            this.life = 3;
-            this.nPoints = 0;
-            this.totalMissiles = this.nMissiles;
+            this.nPoints = _nPoints;
+            this.totalMissiles = _totalMissiles;
         }
 
         public int getMissilesFired() {
