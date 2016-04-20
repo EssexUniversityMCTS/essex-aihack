@@ -17,7 +17,7 @@ import java.awt.*;
  */
 public class SeveralStepsLookAhead implements BattleController {
     
-    private int NUM_ACTIONS = 1;
+    private int NUM_ACTIONS = 3;
 
     private int num_paths;
     
@@ -55,6 +55,7 @@ public class SeveralStepsLookAhead implements BattleController {
         this.playerID = playerId;
         this.num_paths = (int) Math.pow(ActionMap.ActionMap.length, this.NUM_ACTIONS);
         this.weights = new double[this.num_paths];
+        this.proba = new double[this.num_paths];
         for(int i=0; i<this.num_paths; i++)
             this.weights[i] = 1;
     }
@@ -62,6 +63,7 @@ public class SeveralStepsLookAhead implements BattleController {
     @Override
     public Action getAction(SimpleBattle gameState, int playerId, ElapsedCpuTimer elapsedTimer)
     {
+        init(gameState, playerId);
         long avgTimeTaken = 0;
         long acumTimeTaken = 0;
         int numIters = 0;
@@ -102,9 +104,10 @@ public class SeveralStepsLookAhead implements BattleController {
         }
         
         // recommend
-        int bestAction = Util.randomIntWithProb(this.proba);
+        int bestActionsIdx = Util.randomIntWithProb(this.proba);
+        int[] bestActions = Util.intSequence(ActionMap.ActionMap.length, this.NUM_ACTIONS, bestActionsIdx);
         //System.out.println("action : " + best_action);
-        return ActionMap.ActionMap[bestAction];
+        return ActionMap.ActionMap[bestActions[0]];
    }
 
     public void draw(Graphics2D g) {}

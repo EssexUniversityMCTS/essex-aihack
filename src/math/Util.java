@@ -29,7 +29,7 @@ public class Util {
             if(p<sumProba)
                 return i;
         }
-        return proba.length;
+        return proba.length-1;
     }
 
     public static int[] intSequence(int base, int expo, int idx) {
