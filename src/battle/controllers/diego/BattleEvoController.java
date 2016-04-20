@@ -7,8 +7,7 @@ import battle.SimpleBattle;
 import battle.controllers.diego.search.Search;
 import utilities.ElapsedCpuTimer;
 import java.awt.*;
-import math.Util;
-
+import java.util.Random;
 /**
  * PTSP-Competition
  * Sample controller based on macro actions and random search.
@@ -131,10 +130,11 @@ public class BattleEvoController implements battle.BattleController {
             int first = Search.MACRO_ACTION_LENGTH - m_currentMacroAction - 1;
             for(int i = first; i < Search.MACRO_ACTION_LENGTH; ++i)
             {
+                Random randomGenerator = new Random();
                 if(m_search.playerID == 0)
-                    game.update(ActionMap.ActionMap[m_lastMacroAction], ActionMap.ActionMap[Util.randomIntInRange(0,ActionMap.ActionMap.length)]);
+                    game.update(ActionMap.ActionMap[m_lastMacroAction], ActionMap.ActionMap[randomGenerator.nextInt(ActionMap.ActionMap.length)]);
                 else
-                    game.update(ActionMap.ActionMap[Util.randomIntInRange(0,ActionMap.ActionMap.length)], ActionMap.ActionMap[m_lastMacroAction]);
+                    game.update(ActionMap.ActionMap[randomGenerator.nextInt(ActionMap.ActionMap.length)], ActionMap.ActionMap[m_lastMacroAction]);
                 //make the moves to advance the game state.
                 /**
                 if(m_search.playerID == 0)

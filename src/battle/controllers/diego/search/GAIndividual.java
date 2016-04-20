@@ -7,6 +7,9 @@ import utilities.StatSummary;
 
 import java.util.Random;
 
+import static asteroids.Constants.height;
+import static asteroids.Constants.width;
+
 /**
  * PTSP-Competition
  * Created by Diego Perez, University of Essex.
@@ -15,6 +18,7 @@ import java.util.Random;
 public class GAIndividual
 {
     // each genome is a legal solution/action
+    // the length is Search.NUM_ACTIONS_INDIVIDUAL
     public int[] m_genome;
     // the fitness value
     private double m_fitness;
@@ -80,10 +84,14 @@ public class GAIndividual
                 //    System.out.println("The previous result is a guess !");
 
                 Vector2d myPos = thisGameCopy.getShip(playerID).s;
-                search.hitMapOwn[(int)myPos.x][(int)myPos.y]++;
+                //System.out.println("myPos x=" + myPos.x + " intx" + (int)myPos.x + " y=" + myPos.y + " inty=" + (int) myPos.y);
+                //search.hitMapOwn[(int)myPos.x][(int)myPos.y]++;
+                search.hitMapOwn[(int) (myPos.x + width) % width][(int) (myPos.y+height) % height]++;
 
                 Vector2d oppPos = thisGameCopy.getShip(1-playerID).s;
-                search.hitMapOpp[(int)oppPos.x][(int)oppPos.y]++;
+                //System.out.println("oppPos x=" + oppPos.x + " intx" + (int)oppPos.x + " y=" + oppPos.y + " inty=" + (int) oppPos.y);
+                //search.hitMapOpp[(int)oppPos.x][(int)oppPos.y]++;
+                search.hitMapOpp[(int) (oppPos.x + width) % width][(int) (oppPos.y+height) % height]++;
 
             }
         }

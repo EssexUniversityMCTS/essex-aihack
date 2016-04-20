@@ -98,6 +98,9 @@ public class ActionMap
      */
     public static int mutateShooting(int action)
     {
-        return 6;
+        if(action == 6)
+            return 0;
+        else
+            return 6;
     }
 }

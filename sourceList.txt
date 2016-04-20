@@ -79,3 +79,4 @@ src/utilities/StatSummary.java
 src/view/colors/ColorTable.java
 src/view/colors/IntRamp.java
 src/battleGameTest/TestWithMissile.java
+src/battleGameTest/Test.java

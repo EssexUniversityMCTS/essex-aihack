@@ -127,6 +127,7 @@ public class SimpleBattle {
             //System.out.println("player 2: " + this.stats.get(1).life);
         }
 
+        //update();
         if(this.winner == -1) {
             if (stats.get(0).nPoints > stats.get(1).nPoints)
                 this.winner = 0;
@@ -243,13 +244,10 @@ public class SimpleBattle {
     }
 
     public void update() {
-        // update missiles
-        for (GameObject ob : objects)
-            if(ob instanceof BattleMissile)
-                ob.update();
+
         //checkMissiles();
         // get the actions from each player
-
+        checkMissiles();
         // apply them to each player's ship, taking actions as necessary
         ElapsedCpuTimer elapsedTimer = new ElapsedCpuTimer();
         elapsedTimer.setMaxTimeMillis(this.DURATION_PER_TICK);
@@ -258,6 +256,13 @@ public class SimpleBattle {
         //System.out.println("Player 0 at time " + currentTick + " life="+this.stats.get(0).life+ " cooldown=" +this.stats.get(0).cooldown+" missiles="+this.stats.get(0).nMissiles);
 		//System.out.println("Player 1 at time " + currentTick + " life="+this.stats.get(1).life+ " cooldown=" +this.stats.get(1).cooldown+" missiles="+this.stats.get(1).nMissiles);
 		update(a1, a2);
+        // update missiles
+        for (GameObject ob : objects)
+            if(ob instanceof BattleMissile)
+                ob.update();
+
+        checkCollision(s1);
+        checkCollision(s2);
         checkMissiles();
         ss1.add(score(0));
         ss2.add(score(1));
@@ -282,19 +287,15 @@ public class SimpleBattle {
         s1.update(a1);
         s2.update(a2);
 
-        checkCollision(s1);
-        checkCollision(s2);
-
-
         wrap(s1);
         wrap(s2);
 
-        /**
+ /**
         for (GameObject object : objects) {
                 wrap(object);
         }
-         **/
 
+**/
         // here need to add the game objects ...
         /**
         java.util.List<GameObject> killList = new ArrayList<GameObject>();
@@ -312,7 +313,7 @@ public class SimpleBattle {
 
         NeuroShip ss1 = s1;
         NeuroShip ss2 = s2;
-        double dist = ss1.distTo(ss2)-minShootRange;
+
 
         //if(playerId == 0)
         //    System.out.println("player 1 currentTick: " +currentTick+"; d: " + dist + "; dp: " + distPoints + "; dot: " + dot + "; TOTAL: " + (dot*distPoints));
@@ -320,14 +321,14 @@ public class SimpleBattle {
         //    System.out.println("player 2 currentTick: " +currentTick+"; d: " + dist + "; dp: " + distPoints + "; dot: " + dot + "; TOTAL: " + (dot*distPoints));
 
         /**
-         * Check if the two ships are too closed to each other (less than 5)
-         * If yes, neither of them can shoot, score=0
+         * Check if the two ships are too closed to each other
          */
+        double dist = ss1.distTo(ss2)-minShootRange;
         if(dist<0)
         {
             Vector2d dir = Vector2d.subtract(ss2.s, ss1.s);
             dir.normalise();
-            s2.addRepulsiveForce( 0.5f *minShootRange, minShootRange,dir);
+            s2.addRepulsiveForce( 0.5f *minShootRange, minShootRange, dir);
             dir.multiply(-1);
             s1.addRepulsiveForce( 0.5f * minShootRange, minShootRange, dir);
         }
@@ -412,11 +413,12 @@ public class SimpleBattle {
             return MAX_SCORE;
         }
         */
-        double firePoints = stats.get(playerId).nPoints/10;
-        double remainedBudget = stats.get(playerId).nMissiles/this.missilesBudget;
+        double firePoints = stats.get(playerId).nPoints/(10);
+        //double remainedBudget = stats.get(playerId).nMissiles/this.missilesBudget;
         //return dot*distPoints;
-        //return (dot*distPoints + firePoints);
-        return (dot*distPoints + firePoints + remainedBudget);
+        return (dot*distPoints + firePoints);
+        //return dot+firePoints;
+        //return (dot*distPoints + firePoints + remainedBudget);
 
 
         //return (stats.get(playerId).life + dot*distPoints + firePoints);
@@ -433,6 +435,7 @@ public class SimpleBattle {
         //if(stats.get(playerId).life==0 && stats.get(1-playerId).life==0)
         //    return 0;
         //double remainedBudget = stats.get(playerId).nMissiles/this.missilesBudget;
+        //double firePoints = 2*(stats.get(playerId).nPoints/27;
         if(playerId == 0)
             return score1 - score2;
         else
@@ -513,6 +516,7 @@ public class SimpleBattle {
                             dir.normalise();
 
 						    if(playerId==1) {
+                                //s2.addInverseForce(NeuroShip.MIN_FORCE, NeuroShip.MAX_FORCE);
 							    s2.addForceRotate(NeuroShip.MIN_FORCE, NeuroShip.MAX_FORCE, dir);
                                 this.stats.get(0).nPoints += 10;
 						    } else {
@@ -682,8 +686,10 @@ public class SimpleBattle {
     private void wrap(GameObject ob) {
         // only wrap objects which are wrappable
         if (ob.wrappable()) {
+            //System.out.println( "before wrap" + ob.s);
             ob.s.x = (ob.s.x + width) % width;
             ob.s.y = (ob.s.y + height) % height;
+            //System.out.println( "after wrap" + ob.s);
         }
     }
 
