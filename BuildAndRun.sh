@@ -40,5 +40,5 @@ mkdir -p ${build_folder}
 javac -d ${build_folder} @${source_list_filename}
 
 ## Execute the program by pointing out the file which has method main
-java -cp ${build_folder}:**/*.class ${main_filename} -1 1 -2 0 -N 1 -num_actions 10 -macro_actions 1 -screen 1
+java -cp ${build_folder}:**/*.class ${main_filename} -1 7 -2 0 -N 10 -num_actions 10 -macro_actions 1 -cool 3 -screen 1
 #jar cvf ${main_filename}.jar ${build_folder}/**/*.class

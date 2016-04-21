@@ -55,13 +55,12 @@ public class SingleTreeNode
         int numIters = 0;
 
         long remainingLimit = 0;
-        SimpleBattle state = rootState.clone();
         //long remaining = (long) (elapsedTimer.getMaxTime()/1000000.0);
         ElapsedCpuTimer testTimer = new ElapsedCpuTimer();
         testTimer.setMaxTime(elapsedTimer.getMaxTime());
         long remaining = testTimer.remainingTimeMillis();
         while(remaining > 2*avgTimeTaken && remaining > remainingLimit){
-            //SimpleBattle state = rootState.clone();
+            SimpleBattle state = rootState.clone();
             ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
             SingleTreeNode selected = treePolicy(state);
             double delta = selected.rollOut(state);

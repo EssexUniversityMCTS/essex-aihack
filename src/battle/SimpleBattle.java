@@ -36,7 +36,7 @@ public class SimpleBattle {
     public static long DURATION_PER_TICK = 10;
 
     public static int nbObstacles = 5;
-    public static int missilesBudget = 30;
+    public static int missilesBudget = 10000;
     public static int missileSpeed = 4;
     public static int cooldown = 4;
     public static int life = 3;
@@ -416,8 +416,8 @@ public class SimpleBattle {
         double firePoints = stats.get(playerId).nPoints/(10);
         //double remainedBudget = stats.get(playerId).nMissiles/this.missilesBudget;
         //return dot*distPoints;
-        return (dot*distPoints + firePoints);
-        //return dot+firePoints;
+        //return (dot*distPoints + firePoints);
+        return firePoints;
         //return (dot*distPoints + firePoints + remainedBudget);
 
 
@@ -437,9 +437,11 @@ public class SimpleBattle {
         //double remainedBudget = stats.get(playerId).nMissiles/this.missilesBudget;
         //double firePoints = 2*(stats.get(playerId).nPoints/27;
         if(playerId == 0)
-            return score1 - score2;
+            return score1;
+            //return score1 - score2;
         else
-            return score2 - score1;
+            return score2;
+            //return score2 - score1;
     }
 
     public SimpleBattle clone() {
