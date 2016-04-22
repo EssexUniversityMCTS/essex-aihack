@@ -46,6 +46,8 @@ public class SimpleBattle {
     public static int missileCostPenality = 1;
     public static int missileBudgetPenality = 1;
 
+    public static int fitFunc = 1;
+
     private static final double MAX_SCORE = 1000000;
 	private static final double MIN_SCORE = -1000000;
 
@@ -416,8 +418,10 @@ public class SimpleBattle {
         double firePoints = stats.get(playerId).nPoints/(10);
         //double remainedBudget = stats.get(playerId).nMissiles/this.missilesBudget;
         //return dot*distPoints;
-        //return (dot*distPoints + firePoints);
-        return firePoints;
+        if(fitFunc==1)
+            return (dot*distPoints + firePoints);
+        else
+            return firePoints;
         //return (dot*distPoints + firePoints + remainedBudget);
 
 
@@ -436,12 +440,17 @@ public class SimpleBattle {
         //    return 0;
         //double remainedBudget = stats.get(playerId).nMissiles/this.missilesBudget;
         //double firePoints = 2*(stats.get(playerId).nPoints/27;
-        if(playerId == 0)
-            return score1;
-            //return score1 - score2;
-        else
-            return score2;
-            //return score2 - score1;
+        if(fitFunc==1) {
+            if(playerId == 0)
+                return score1 - score2;
+            else
+                return score2 - score1;
+        } else {
+            if(playerId == 0)
+                return score1;
+            else
+                return score2;
+        }
     }
 
     public SimpleBattle clone() {

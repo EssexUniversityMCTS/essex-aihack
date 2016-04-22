@@ -28,6 +28,7 @@ public class Test {
         SimpleBattle.minShootRange = 30;
         SimpleBattle.missileCostPenality = 1;
         SimpleBattle.missileBudgetPenality = 1;
+        SimpleBattle.fitFunc = 1;
 
         Search.NUM_ACTIONS_INDIVIDUAL = 10;
         Search.MACRO_ACTION_LENGTH = 2;
@@ -65,6 +66,12 @@ public class Test {
             }
             if(Util.findArgValue(args, "screen", opt_value)) {
                 screen = true;
+            }
+            if(Util.findArgValue(args, "cool", opt_value)) {
+                SimpleBattle.cooldown = opt_value.intValue();
+            }
+            if(Util.findArgValue(args, "fit", opt_value)) {
+                SimpleBattle.fitFunc = opt_value.intValue();
             }
         }
 
