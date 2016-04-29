@@ -33,7 +33,7 @@ public class SimpleBattle {
 
     public static int nTicks = 10;
     boolean visible = true;
-    public static long DURATION_PER_TICK = 10;
+    public static long DURATION_PER_TICK = 20;
 
     public static int nbObstacles = 5;
     public static int missilesBudget = 10000;

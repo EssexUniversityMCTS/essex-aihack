@@ -55,7 +55,9 @@ src/battle/controllers/nullController/NullController.java
 src/battle/controllers/olmcts/AbstractPlayer.java
 src/battle/controllers/olmcts/Agent.java
 src/battle/controllers/olmcts/SingleMCTSPlayer.java
+src/battle/controllers/olmcts/SingleMCTSPlayerDetOpp.java
 src/battle/controllers/olmcts/SingleTreeNode.java
+src/battle/controllers/olmcts/SingleTreeNodeDetOpp.java
 src/battle/controllers/onesteplookahead/OneStepLookAhead.java
 src/battle/controllers/onesteplookahead/SeveralStepsLookAhead.java
 src/battle/controllers/random/RandomController.java

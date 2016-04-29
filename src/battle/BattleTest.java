@@ -9,7 +9,9 @@ import battle.controllers.olmcts.*;
 import battle.controllers.onesteplookahead.*;
 import battle.controllers.nullController.NullController;
 import battle.controllers.onesteplookahead.OneStepLookAhead;
+import battle.controllers.FireForwardController;
 import battle.controllers.random.RandomController;
+import battle.controllers.RotateAndShoot;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -31,6 +33,9 @@ public class BattleTest {
     static final int ONESTEP = 6;
     static final int OLMCTS = 7;
     static final int SSTEP = 8;
+    static final int FIREFOR = 9;
+    static final int RAS = 10;
+    static final int DETOLMCTS = 11;
 
     public static int MAX_TICKS_GAME = 2000;
     public static int NUM_GAMES_TO_PLAY = 1;
@@ -50,6 +55,15 @@ public class BattleTest {
         //playN(BattleTest.GA, BattleTest.COEV, "plots/data/GA-RND_"+Search.NUM_ACTIONS_INDIVIDUAL+"x"+Search.MACRO_ACTION_LENGTH+"_vs_COEV_"+NUM_GAMES_TO_PLAY+"x"+MAX_TICKS_GAME+".txt");
     }
     
+    public static void playOneSinglePlayer(int ply)
+    {
+        boolean visuals = true;
+        SimpleBattle battle = new SimpleBattle(visuals, MAX_TICKS_GAME);
+        BattleController p1 = createPlayer(9);
+        BattleController p2 = createPlayer(ply);
+
+        double []res = battle.playGame(p1, p2);
+    }
 
     public static void playOne(int ply1, int ply2)
     {
@@ -139,6 +153,12 @@ public class BattleTest {
                 return new ArrowsController();
             case BattleTest.SSTEP:
                 return new SeveralStepsLookAhead(rnd1);
+            case BattleTest.FIREFOR:
+                return new FireForwardController();
+            case BattleTest.RAS:
+                return new RotateAndShoot();
+            case BattleTest.DETOLMCTS:
+                return new SingleMCTSPlayerDetOpp(rnd1);
         }
 
         return new ArrowsController();

@@ -14,7 +14,8 @@ public class TestWithMissile {
 
     public static int player1 = 1;
     public static int player2 = 0;
-    public static String[] playerNames = {"COEV", "GA", "RND", "NULL", "WASD", "ARROWS", "ONESTEP", "OLMCTS", "SSTEP"};
+    public static boolean singlePlayer = false;
+    public static String[] playerNames = {"COEV", "GA", "RND", "NULL", "WASD", "ARROWS", "ONESTEP", "OLMCTS", "SSTEP", "SOLMCTS"};
     public static boolean screen = true;
     static BattleTest mytest;
 
@@ -52,6 +53,11 @@ public class TestWithMissile {
             if(Util.findArgValue(args, "screen", opt_value)) {
                 screen = true;
             }
+            if(Util.findArgValue(args, "3", opt_value)) {
+                System.out.println("single player game");
+                singlePlayer = true;
+                player2 = opt_value.intValue();
+            }
         }
         String player1name = playerNames[player1];
         if(player1==1 || player1==0)
@@ -59,11 +65,14 @@ public class TestWithMissile {
         String player2name = playerNames[player2];
         if(player2==1 || player2==0)
             player2name = player2name + "_" + Search.NUM_ACTIONS_INDIVIDUAL+"x"+Search.MACRO_ACTION_LENGTH;
-        
-        if(screen) {
-            mytest.playOne(player1, player2);
+        if(singlePlayer) {
+            mytest.playOneSinglePlayer(player2);
         } else {
-            mytest.playN(player1, player2, "data/" + player1name + "_vs_" + player2name + "_" + BattleTest.MAX_TICKS_GAME + "x" + BattleTest.NUM_GAMES_TO_PLAY + ".txt");
+            if(screen) {
+                mytest.playOne(player1, player2);
+            } else {
+                mytest.playN(player1, player2, "data/" + player1name + "_vs_" + player2name + "_" + BattleTest.MAX_TICKS_GAME + "x" + BattleTest.NUM_GAMES_TO_PLAY + ".txt");
+            }
         }
     }
 }

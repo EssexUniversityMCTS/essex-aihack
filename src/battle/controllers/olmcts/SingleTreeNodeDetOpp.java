@@ -6,19 +6,21 @@ import utilities.ElapsedCpuTimer;
 import math.Util;
 import battle.controllers.diego.ActionMap; 
 
+
+import asteroids.Action;
 /**
  * ATTENTION: This file is edited to adapt to BattleGame.                       
  * Edited by Jialin Liu, University of Essex                                    
  * Date: 01/04/2016
  */
-public class SingleTreeNode
+public class SingleTreeNodeDetOpp
 {
     private static final double HUGE_NEGATIVE = -10000000.0;
     private static final double HUGE_POSITIVE =  10000000.0;
     public static double epsilon = 1e-6;
     public static double egreedyEpsilon = 0.05;
-    public SingleTreeNode parent;
-    public SingleTreeNode[] children;
+    public SingleTreeNodeDetOpp parent;
+    public SingleTreeNodeDetOpp[] children;
     public double totValue;
     public int nVisits;
     public static Random m_rnd;
@@ -31,14 +33,14 @@ public class SingleTreeNode
 
     public static SimpleBattle rootState;
 
-    public SingleTreeNode(Random rnd, int _playerID) {
+    public SingleTreeNodeDetOpp(Random rnd, int _playerID) {
         this(null, -1, rnd, _playerID);
     }
 
-    public SingleTreeNode(SingleTreeNode parent, int childIdx, Random rnd, int _playerID) {
+    public SingleTreeNodeDetOpp(SingleTreeNodeDetOpp parent, int childIdx, Random rnd, int _playerID) {
         this.parent = parent;
         this.m_rnd = rnd;
-        children = new SingleTreeNode[NUM_ACTIONS];
+        children = new SingleTreeNodeDetOpp[NUM_ACTIONS];
         totValue = 0.0;
         this.childIdx = childIdx;
         this.playerID = _playerID;
@@ -62,7 +64,7 @@ public class SingleTreeNode
         while(remaining > 2*avgTimeTaken && remaining > remainingLimit){
             SimpleBattle state = rootState.clone();
             ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
-            SingleTreeNode selected = treePolicy(state);
+            SingleTreeNodeDetOpp selected = treePolicy(state);
             double delta = selected.rollOut(state);
             backUp(selected, delta);
             numIters++;
@@ -74,9 +76,9 @@ public class SingleTreeNode
         }
     }
 
-    public SingleTreeNode treePolicy(SimpleBattle state) {
+    public SingleTreeNodeDetOpp treePolicy(SimpleBattle state) {
 
-        SingleTreeNode cur = this;
+        SingleTreeNodeDetOpp cur = this;
 
         while (!state.isGameOver() && cur.m_depth < ROLLOUT_DEPTH)
         {
@@ -86,7 +88,7 @@ public class SingleTreeNode
                 return cur.expand(state);
             } else {
                // System.out.println("treePolicy: fully expanded, call uct, m_depth=" + m_depth);
-                SingleTreeNode next = cur.uct(state);
+                SingleTreeNodeDetOpp next = cur.uct(state);
                 cur = next;
             }
         }
@@ -95,7 +97,7 @@ public class SingleTreeNode
     }
 
 
-    public SingleTreeNode expand(SimpleBattle state) {
+    public SingleTreeNodeDetOpp expand(SimpleBattle state) {
         int i=0;
         while(children[i] != null)
             i++;
@@ -110,21 +112,23 @@ public class SingleTreeNode
             }
         }
         //Roll the state
-        if(playerID==0)
-            state.update(ActionMap.ActionMap[bestAction], ActionMap.ActionMap[this.m_rnd.nextInt(NUM_ACTIONS)]);
-        else
-            state.update(ActionMap.ActionMap[this.m_rnd.nextInt(NUM_ACTIONS)], ActionMap.ActionMap[bestAction]);
-        SingleTreeNode tn = new SingleTreeNode(this,bestAction,this.m_rnd,playerID);
+        Action oppAction = new Action(0, 1, true);
+        if(playerID==0){
+            state.update(ActionMap.ActionMap[bestAction], oppAction);
+        } else {
+            state.update(oppAction, ActionMap.ActionMap[bestAction]);
+        }
+        SingleTreeNodeDetOpp tn = new SingleTreeNodeDetOpp(this,bestAction,this.m_rnd,playerID);
        // System.out.println("expand: new node created with bestAction="+bestAction);
         children[bestAction] = tn;
         return tn;
     }
 
-    public SingleTreeNode uct(SimpleBattle state) {
+    public SingleTreeNodeDetOpp uct(SimpleBattle state) {
 
-        SingleTreeNode selected = null;
+        SingleTreeNodeDetOpp selected = null;
         double bestValue = -Double.MAX_VALUE;
-        for (SingleTreeNode child : this.children)
+        for (SingleTreeNodeDetOpp child : this.children)
         {
             double hvVal = child.totValue;
             double childValue =  hvVal / (child.nVisits + this.epsilon);
@@ -153,11 +157,12 @@ public class SingleTreeNode
         }
 
         //Roll the state:
-        if(playerID==0)
-            state.update(ActionMap.ActionMap[selected.childIdx], ActionMap.ActionMap[this.m_rnd.nextInt(NUM_ACTIONS)]);
-        else
-            state.update(ActionMap.ActionMap[this.m_rnd.nextInt(NUM_ACTIONS)], ActionMap.ActionMap[selected.childIdx]);
-
+        Action oppAction = new Action(0, 1, true);
+        if(playerID==0) {
+            state.update(ActionMap.ActionMap[selected.childIdx], oppAction);
+        } else {
+            state.update(oppAction, ActionMap.ActionMap[selected.childIdx]);
+        }
         return selected;
     }
 
@@ -170,10 +175,12 @@ public class SingleTreeNode
 
             //System.out.println("rollOut: not finish rollout, thisDepth=" +thisDepth);
             int action = m_rnd.nextInt(NUM_ACTIONS);
-            if(playerID==0)
-                state.update(ActionMap.ActionMap[action], ActionMap.ActionMap[this.m_rnd.nextInt(NUM_ACTIONS)]);
-            else
-                state.update(ActionMap.ActionMap[this.m_rnd.nextInt(NUM_ACTIONS)], ActionMap.ActionMap[action]);
+            Action oppAction = new Action(0, 1, true);
+            if(playerID==0) {
+                state.update(ActionMap.ActionMap[action],oppAction);
+            } else {
+                state.update(oppAction,ActionMap.ActionMap[action]);
+            }
             thisDepth++;
         }
 
@@ -223,9 +230,9 @@ public class SingleTreeNode
         return false;
     }
 
-    public void backUp(SingleTreeNode node, double result)
+    public void backUp(SingleTreeNodeDetOpp node, double result)
     {
-        SingleTreeNode n = node;
+        SingleTreeNodeDetOpp n = node;
         while(n != null)
         {
             n.nVisits++;
@@ -308,7 +315,7 @@ public class SingleTreeNode
 
 
     public boolean notFullyExpanded() {
-        for (SingleTreeNode tn : children) {
+        for (SingleTreeNodeDetOpp tn : children) {
             if (tn == null) {
                 return true;
             }

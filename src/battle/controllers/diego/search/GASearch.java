@@ -123,13 +123,14 @@ public class GASearch extends Search {
             
             GAIndividual[] nextPop = new GAIndividual[m_individuals.length];
             
+            GAIndividual opponent = opponentGen.getOpponent(Search.NUM_ACTIONS_INDIVIDUAL);
             int i;
             for(i = 0; i < ELITISM; ++i)
             {
                 nextPop[i] = m_individuals[i];
+                nextPop[i].evaluate(a_gameState, opponent);
             }
             
-            GAIndividual opponent = opponentGen.getOpponent(Search.NUM_ACTIONS_INDIVIDUAL);
             
             for(;i<m_individuals.length;++i)
             {

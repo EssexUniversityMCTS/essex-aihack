@@ -12,7 +12,8 @@ import math.Util;
 public class Test {
     public static int player1 = 1;
     public static int player2 = 0;
-    public static String[] playerNames = {"COEV", "GA", "RND", "NULL", "WASD", "ARROWS", "ONESTEP", "OLMCTS", "SSTEP"};
+    public static boolean singlePlayer = false;
+    public static String[] playerNames = {"COEV", "GA", "RND", "NULL", "WASD", "ARROWS", "ONESTEP", "OLMCTS", "SSTEP", "FIRFOR", "RAS", "DETOLMCTS",};
     public static boolean screen = false;
     static BattleTest mytest;
 
@@ -73,6 +74,12 @@ public class Test {
             if(Util.findArgValue(args, "fit", opt_value)) {
                 SimpleBattle.fitFunc = opt_value.intValue();
             }
+            if(Util.findArgValue(args, "3", opt_value)) {
+                System.out.println("single player game");
+                player1 = 10;
+                player2 = opt_value.intValue();
+            }
+
         }
 
         // prepare output
